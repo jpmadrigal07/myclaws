@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/jpmadrigal07/myclaws/compare/v1.0.0...v1.1.0) (2026-02-04)
+
+### ✨ Features
+
+* Add MVP Business Requirements Document for MyClaw SaaS ([3083443](https://github.com/jpmadrigal07/myclaws/commit/30834433eba2c0881f1582646d568239dd6a2e4c))
+
 ## 1.0.0 (2026-02-04)
 
 ### ✨ Features
