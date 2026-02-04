@@ -11,7 +11,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (session && !isPending) {
-      router.push('/');
+      router.push('/dashboard');
     }
   }, [session, isPending, router]);
 
@@ -20,7 +20,7 @@ export default function LoginPage() {
     try {
       await signIn.social({
         provider: 'google',
-        callbackURL: '/',
+        callbackURL: '/dashboard',
       });
     } catch (error) {
       console.error('Sign in error:', error);
