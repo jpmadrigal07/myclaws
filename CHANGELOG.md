@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/jpmadrigal07/myclaws/compare/v1.1.0...v1.2.0) (2026-02-04)
+
+### ✨ Features
+
+* Revamp MyClaw landing and dashboard experience ([ac15c77](https://github.com/jpmadrigal07/myclaws/commit/ac15c77bd879c4d6c5fcb2a46be231154344ca9f))
+
 ## [1.1.0](https://github.com/jpmadrigal07/myclaws/compare/v1.0.0...v1.1.0) (2026-02-04)
 
 ### ✨ Features
