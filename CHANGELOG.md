@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/jpmadrigal07/myclaws/compare/v1.2.0...v1.2.1) (2026-02-05)
+
+### 🐛 Bug Fixes
+
+* Update branding and enhance user experience across the application ([2564c60](https://github.com/jpmadrigal07/myclaws/commit/2564c60681b6fa2e589b53ce4612eb27dabe3721))
+
 ## [1.2.0](https://github.com/jpmadrigal07/myclaws/compare/v1.1.0...v1.2.0) (2026-02-04)
 
 ### ✨ Features
