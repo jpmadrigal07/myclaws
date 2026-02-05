@@ -3,6 +3,9 @@
 import { signIn, useSession } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
+import { changaOne } from '@/lib/fonts';
 
 export default function LoginPage() {
   const { data: session, isPending } = useSession();
@@ -30,8 +33,8 @@ export default function LoginPage() {
 
   if (isPending) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-gray-900" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
       </div>
     );
   }
@@ -41,35 +44,61 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Welcome back
-          </h1>
-          <p className="mt-2 text-sm text-gray-600">
-            Sign in to your account to continue
+    <div className="flex min-h-screen flex-col bg-background px-4">
+      {/* Back to Home */}
+      <div className="mx-auto w-full max-w-md pt-4 sm:pt-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to home
+        </Link>
+      </div>
+
+      <div className="flex flex-1 flex-col items-center justify-center py-8 sm:py-12">
+        <div className="w-full max-w-md space-y-6 sm:space-y-8">
+          {/* Logo and Title */}
+          <div className="text-center">
+            <h1 className={`text-3xl sm:text-4xl text-foreground ${changaOne.className}`}>
+              MyClaws
+            </h1>
+            <p className="mt-3 text-lg sm:text-xl font-medium text-foreground">
+              Welcome back
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Sign in to get your personal AI assistant
+            </p>
+          </div>
+
+          {/* Sign In Card */}
+          <div className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm">
+            <button
+              onClick={handleGoogleSignIn}
+              disabled={isLoading}
+              className="flex w-full items-center justify-center gap-3 rounded-lg border border-border bg-background px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isLoading ? (
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted border-t-foreground" />
+              ) : (
+                <GoogleIcon />
+              )}
+              {isLoading ? 'Signing in...' : 'Continue with Google'}
+            </button>
+          </div>
+
+          <p className="text-center text-xs text-muted-foreground px-4">
+            By continuing, you agree to our{' '}
+            <Link href="/terms" className="underline hover:text-foreground">
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link href="/privacy" className="underline hover:text-foreground">
+              Privacy Policy
+            </Link>
+            .
           </p>
         </div>
-
-        <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
-          <button
-            onClick={handleGoogleSignIn}
-            disabled={isLoading}
-            className="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isLoading ? (
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-900" />
-            ) : (
-              <GoogleIcon />
-            )}
-            {isLoading ? 'Signing in...' : 'Continue with Google'}
-          </button>
-        </div>
-
-        <p className="text-center text-xs text-gray-500">
-          By continuing, you agree to our Terms of Service and Privacy Policy.
-        </p>
       </div>
     </div>
   );

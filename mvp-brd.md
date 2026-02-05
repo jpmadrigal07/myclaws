@@ -1,6 +1,6 @@
 # MVP Business Requirements Document (BRD)
 
-## MyClaw - OpenClaw Easy Deployment SaaS
+## MyClaws - OpenClaw Easy Deployment SaaS
 
 **Version:** 1.0
 **Date:** February 4, 2026
@@ -10,7 +10,7 @@
 
 ## 1. Executive Summary
 
-MyClaw is a SaaS platform that provides one-click deployment of [OpenClaw](https://openclaw.ai/) personal AI assistants. Users can get their own OpenClaw instance running in minutes without any technical knowledge, starting with Telegram integration.
+MyClaws is a SaaS platform that provides one-click deployment of [OpenClaw](https://openclaw.ai/) personal AI assistants. Users can get their own OpenClaw instance running in minutes without any technical knowledge, starting with Telegram integration.
 
 ### Value Proposition
 
@@ -66,7 +66,8 @@ A managed SaaS platform that:
 |-------|-------|-----------|
 | **Time Limit** | 24 hours | Enough time to test, creates urgency |
 | **Message Limit** | 50 messages | Enough to experience value, prevents abuse |
-| **Whichever First** | Time OR messages | Trial ends when either limit is reached |
+| **Inactivity Timeout** | 6 hours | Pause idle trials to save resources |
+| **Whichever First** | Time OR messages OR inactivity | Trial paused when any limit is reached |
 
 **Trial Behavior:**
 - Dashboard shows remaining messages: "42/50 messages remaining"
@@ -74,6 +75,32 @@ A managed SaaS platform that:
 - Warning at 10 messages remaining
 - When limit reached: instance paused, upgrade prompt shown
 - User can upgrade anytime during trial to remove limits
+
+**Inactivity Policy (Trial Only):**
+- If no messages sent for 6 hours → instance auto-paused
+- User can resume by visiting dashboard (restarts trial timer where left off)
+- Saves VM resources from idle trial users
+
+**Instance Deletion Policy:**
+| Status | Retention | Action |
+|--------|-----------|--------|
+| Trial ended (no payment) | 3 days | Instance + data deleted |
+| Subscription cancelled | 7 days | Instance + data deleted |
+| Payment failed | 3 days grace | Instance paused, then deleted |
+
+**Deletion Flow:**
+```
+Trial ends → Instance paused → 3 days grace period
+    ↓                              ↓
+User upgrades?              No payment?
+    ↓                              ↓
+Instance resumed            Instance + data DELETED
+```
+
+**User Notifications:**
+- Email when trial paused (inactivity or limit reached)
+- Email 24 hours before deletion: "Your data will be deleted in 24 hours"
+- Dashboard shows countdown: "Instance will be deleted in 2 days 14 hours"
 
 ### 4.3 Messaging Platform Integration
 
@@ -187,7 +214,7 @@ OPENAI_API_KEY=sk-...
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        MyClaw Platform                       │
+│                        MyClaws Platform                       │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
@@ -238,7 +265,7 @@ OPENAI_API_KEY=sk-...
 
 | Item | Stripe Object | Details |
 |------|---------------|---------|
-| **Product** | `prod_myclawPro` | "MyClaw Pro - Personal AI Assistant" |
+| **Product** | `prod_myclawPro` | "MyClaws Pro - Personal AI Assistant" |
 | **Price** | `price_myclawMonthly` | $19/month, recurring, USD |
 
 #### Stripe Components Used
@@ -442,7 +469,8 @@ Subscription Lifecycle:
 | `userId` | ID | Reference to user |
 | `vmId` | ID | Reference to VM |
 | `containerId` | string | Docker container ID |
-| `status` | string | `provisioning` \| `running` \| `stopped` \| `error` |
+| `status` | string | `provisioning` \| `running` \| `paused` \| `error` \| `pending_deletion` |
+| `pauseReason` | string? | `trial_expired` \| `trial_inactive` \| `message_limit` \| `payment_failed` \| `cancelled` |
 | `aiModel` | string | `kimi-k2.5` \| `claude-sonnet` \| `gpt-4o` (default: `kimi-k2.5`) |
 | `platform` | string | `telegram` \| `discord` \| `whatsapp` (default: `telegram`) |
 | `telegramBotToken` | string? | Encrypted Telegram bot token |
@@ -451,7 +479,9 @@ Subscription Lifecycle:
 | `whatsappPhoneId` | string? | WhatsApp Business phone ID (future) |
 | `instanceName` | string? | User-defined name (for future multi-instance) |
 | `createdAt` | number | Timestamp |
-| `lastActiveAt` | number | Last activity timestamp |
+| `lastActiveAt` | number | Last message timestamp (for inactivity check) |
+| `pausedAt` | number? | When instance was paused |
+| `scheduledDeletionAt` | number? | When instance will be deleted (3 days after pause) |
 
 ### 7.3 VMs Table
 
@@ -512,10 +542,14 @@ Subscription Lifecycle:
 |----------|------|-------------|
 | `admin.provisionVM` | action | Create new Hetzner VM |
 | `admin.deployInstance` | action | Deploy OpenClaw container |
+| `admin.deleteInstance` | action | Delete instance and cleanup data |
 | `admin.pauseInstance` | action | Pause instance (trial expired/cancelled) |
 | `admin.unpauseInstance` | action | Unpause instance (payment received) |
 | `admin.cleanupExpiredTrials` | action | Cron: check and pause expired trials |
 | `admin.checkTrialMessages` | action | Cron: check and pause over-limit trials |
+| `admin.checkTrialInactivity` | action | Cron: pause trials inactive >6 hours |
+| `admin.deleteScheduledInstances` | action | Cron: delete instances past 3-day grace |
+| `admin.sendDeletionWarnings` | action | Cron: email users 24h before deletion |
 
 ---
 
@@ -615,7 +649,7 @@ User sends message to Telegram Bot
          │
          ▼
 ┌─────────────────────────────┐
-│   Webhook to MyClaw API     │
+│   Webhook to MyClaws API     │
 │   POST /api/usage/message   │
 │   { instanceId, timestamp } │
 └─────────────────────────────┘
@@ -755,7 +789,7 @@ User sends message to Telegram Bot
 |------------|---------|----------------|
 | Self-hosted OpenClaw | Free (+ server costs) | Full control, requires technical skill |
 | Generic VPS + setup | ~$20-50/month | Manual setup required |
-| **MyClaw (Us)** | $19/month | Zero-config, instant setup |
+| **MyClaws (Us)** | $19/month | Zero-config, instant setup |
 
 ---
 

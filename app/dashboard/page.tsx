@@ -52,10 +52,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-1 text-gray-600">
+        <h1 className="text-xl sm:text-2xl font-bold text-foreground">Dashboard</h1>
+        <p className="mt-1 text-sm sm:text-base text-muted-foreground">
           Manage your personal AI assistant
         </p>
       </div>
@@ -76,7 +76,7 @@ export default function DashboardPage() {
       )}
 
       {/* Quick Actions */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <QuickActionCard
           icon={<MessageSquare className="h-5 w-5" />}
           title="Chat with your Bot"
@@ -110,7 +110,7 @@ export default function DashboardPage() {
           title="AI Model"
           description="Kimi K2.5 (Default)"
           action={
-            <span className="text-sm text-gray-500">Claude & GPT coming soon</span>
+            <span className="text-sm text-muted-foreground">Claude & GPT coming soon</span>
           }
         />
         <QuickActionCard
@@ -118,7 +118,7 @@ export default function DashboardPage() {
           title="Integrations"
           description="Telegram (Active)"
           action={
-            <span className="text-sm text-gray-500">Discord & WhatsApp coming soon</span>
+            <span className="text-sm text-muted-foreground">Discord & WhatsApp coming soon</span>
           }
         />
       </div>
@@ -151,27 +151,27 @@ function TrialStatusCard({
     .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
   return (
-    <div className="rounded-xl border bg-white p-6 shadow-sm">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Trial Status</h2>
+    <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h2 className="text-base sm:text-lg font-semibold text-card-foreground">Trial Status</h2>
         {isLow && (
-          <div className="flex items-center gap-1 text-amber-600">
+          <div className="flex items-center gap-1 text-amber-500">
             <AlertCircle className="h-4 w-4" />
-            <span className="text-sm font-medium">Running low!</span>
+            <span className="text-xs sm:text-sm font-medium">Running low!</span>
           </div>
         )}
       </div>
 
-      <div className="mt-4 space-y-4">
+      <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4">
         {/* Messages Progress */}
         <div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Messages</span>
-            <span className="font-medium">
+          <div className="flex items-center justify-between text-xs sm:text-sm">
+            <span className="text-muted-foreground">Messages</span>
+            <span className="font-medium text-card-foreground">
               {trialMessagesUsed}/{trialMessageLimit} used
             </span>
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
             <div
               className={`h-full rounded-full transition-all ${
                 isLow ? 'bg-amber-500' : 'bg-primary'
@@ -179,28 +179,28 @@ function TrialStatusCard({
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
             {messagesRemaining} messages remaining
           </p>
         </div>
 
         {/* Time Remaining */}
-        <div className="flex items-center gap-2">
-          <Clock className="h-4 w-4 text-gray-400" />
-          <span className="text-sm text-gray-600">Time remaining:</span>
-          <span className="font-mono font-medium">{timeString}</span>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Clock className="h-4 w-4 text-muted-foreground" />
+          <span className="text-xs sm:text-sm text-muted-foreground">Time remaining:</span>
+          <span className="font-mono text-sm font-medium text-card-foreground">{timeString}</span>
         </div>
       </div>
 
       {/* Upgrade CTA */}
-      <div className="mt-6 rounded-lg bg-primary/5 p-4">
-        <p className="text-sm font-medium text-gray-900">
+      <div className="mt-4 sm:mt-6 rounded-lg bg-primary/10 p-3 sm:p-4">
+        <p className="text-sm font-medium text-card-foreground">
           Upgrade to Pro - $19/mo
         </p>
-        <p className="mt-1 text-sm text-gray-600">
+        <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
           Unlimited messages, no time limits
         </p>
-        <Button className="mt-3 gap-2" size="sm" asChild>
+        <Button className="mt-3 gap-2 w-full sm:w-auto" size="sm" asChild>
           <Link href="/dashboard/billing">
             Upgrade Now
             <ArrowRight className="h-4 w-4" />
@@ -213,19 +213,19 @@ function TrialStatusCard({
 
 function TrialExpiredCard() {
   return (
-    <div className="rounded-xl border-2 border-amber-200 bg-amber-50 p-6">
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
-          <Clock className="h-5 w-5 text-amber-600" />
+    <div className="rounded-xl border-2 border-amber-500/50 bg-amber-500/10 p-4 sm:p-6">
+      <div className="flex items-start sm:items-center gap-3">
+        <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-amber-500/20">
+          <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-amber-500" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Trial Ended</h2>
-          <p className="text-sm text-gray-600">
+          <h2 className="text-base sm:text-lg font-semibold text-foreground">Trial Ended</h2>
+          <p className="text-xs sm:text-sm text-muted-foreground">
             You&apos;ve reached your trial limit. Upgrade to continue using your AI assistant.
           </p>
         </div>
       </div>
-      <Button className="mt-4 gap-2" asChild>
+      <Button className="mt-4 gap-2 w-full sm:w-auto" asChild>
         <Link href="/dashboard/billing">
           Upgrade to Pro - $19/month
           <ArrowRight className="h-4 w-4" />
@@ -259,7 +259,7 @@ function InstanceStatusCard({
       description: 'Setting up your instance...',
     },
     stopped: {
-      color: 'bg-gray-400',
+      color: 'bg-muted-foreground',
       label: 'Stopped',
       description: 'Instance is paused',
     },
@@ -279,48 +279,49 @@ function InstanceStatusCard({
     statusConfig.error;
 
   return (
-    <div className="rounded-xl border bg-white p-6 shadow-sm">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Instance Status</h2>
+    <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h2 className="text-base sm:text-lg font-semibold text-card-foreground">Instance Status</h2>
         <div className="flex items-center gap-2">
           <div className={`h-2 w-2 rounded-full ${status.color}`} />
-          <span className="text-sm font-medium">{status.label}</span>
+          <span className="text-xs sm:text-sm font-medium text-card-foreground">{status.label}</span>
         </div>
       </div>
 
-      <p className="mt-1 text-sm text-gray-600">{status.description}</p>
+      <p className="mt-1 text-xs sm:text-sm text-muted-foreground">{status.description}</p>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-3">
+      <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3">
         <div>
-          <p className="text-sm text-gray-500">Bot</p>
-          <p className="font-medium">
+          <p className="text-xs sm:text-sm text-muted-foreground">Bot</p>
+          <p className="text-sm sm:text-base font-medium text-card-foreground truncate">
             {instance.telegramBotUsername
               ? `@${instance.telegramBotUsername}`
               : 'Not configured'}
           </p>
         </div>
         <div>
-          <p className="text-sm text-gray-500">AI Model</p>
-          <p className="font-medium">Kimi K2.5</p>
+          <p className="text-xs sm:text-sm text-muted-foreground">AI Model</p>
+          <p className="text-sm sm:text-base font-medium text-card-foreground">Kimi K2.5</p>
         </div>
-        <div>
-          <p className="text-sm text-gray-500">Platform</p>
-          <p className="font-medium capitalize">{instance.platform}</p>
+        <div className="col-span-2 sm:col-span-1">
+          <p className="text-xs sm:text-sm text-muted-foreground">Platform</p>
+          <p className="text-sm sm:text-base font-medium text-card-foreground capitalize">{instance.platform}</p>
         </div>
       </div>
 
       {instance.status === 'running' && (
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex flex-col sm:flex-row gap-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => restartInstance()}
+            className="w-full sm:w-auto"
           >
             <RefreshCw className="h-4 w-4" />
             Restart
           </Button>
           {instance.telegramBotUsername && (
-            <Button size="sm" asChild>
+            <Button size="sm" asChild className="w-full sm:w-auto">
               <a
                 href={`https://t.me/${instance.telegramBotUsername}`}
                 target="_blank"
@@ -349,28 +350,28 @@ function QuickActionCard({
   action: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border bg-white p-5 shadow-sm">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+    <div className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
+      <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
         {icon}
       </div>
-      <h3 className="mt-3 font-semibold text-gray-900">{title}</h3>
-      <p className="mt-1 text-sm text-gray-600">{description}</p>
-      <div className="mt-3">{action}</div>
+      <h3 className="mt-2 sm:mt-3 text-sm sm:text-base font-semibold text-card-foreground">{title}</h3>
+      <p className="mt-1 text-xs sm:text-sm text-muted-foreground line-clamp-2">{description}</p>
+      <div className="mt-2 sm:mt-3">{action}</div>
     </div>
   );
 }
 
 function DashboardSkeleton() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <div className="h-8 w-32 animate-pulse rounded bg-gray-200" />
-        <div className="mt-2 h-5 w-64 animate-pulse rounded bg-gray-200" />
+        <div className="h-6 sm:h-8 w-28 sm:w-32 animate-pulse rounded bg-muted" />
+        <div className="mt-2 h-4 sm:h-5 w-48 sm:w-64 animate-pulse rounded bg-muted" />
       </div>
-      <div className="h-48 animate-pulse rounded-xl bg-gray-200" />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="h-40 sm:h-48 animate-pulse rounded-xl bg-muted" />
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-36 animate-pulse rounded-xl bg-gray-200" />
+          <div key={i} className="h-32 sm:h-36 animate-pulse rounded-xl bg-muted" />
         ))}
       </div>
     </div>
