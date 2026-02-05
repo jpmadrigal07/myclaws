@@ -75,7 +75,7 @@ export default function LandingPage() {
                 </Link>
               </Button>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                1-day free trial • 50 messages • No credit card • <strong>$19/month</strong> after trial
+                1-day free trial • 50 messages • No credit card • Cancel anytime • <strong>$19/month</strong> after trial
               </p>
             </div>
           </div>

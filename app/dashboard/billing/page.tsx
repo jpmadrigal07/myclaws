@@ -34,8 +34,8 @@ export default function BillingPage() {
                 <p className="text-xl sm:text-2xl font-bold text-card-foreground">Pro Plan</p>
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   $9/month • Renews on{' '}
-                  {user?.subscriptionEndDate
-                    ? new Date(user.subscriptionEndDate).toLocaleDateString()
+                  {user?.currentPeriodEnd
+                    ? new Date(user.currentPeriodEnd).toLocaleDateString()
                     : 'N/A'}
                 </p>
               </div>
@@ -48,9 +48,11 @@ export default function BillingPage() {
               <div>
                 <p className="text-xl sm:text-2xl font-bold text-card-foreground">Free Trial</p>
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  {trialStatus?.daysRemaining !== null && trialStatus.daysRemaining > 0
-                    ? `${trialStatus.daysRemaining} days remaining`
-                    : 'Trial expired'}
+                  {trialStatus?.isTrialExpired
+                    ? 'Trial expired'
+                    : trialStatus?.timeRemaining
+                      ? `${Math.ceil(trialStatus.timeRemaining / (24 * 60 * 60 * 1000))} days remaining`
+                      : 'Trial expired'}
                 </p>
               </div>
               <span
@@ -124,8 +126,8 @@ export default function BillingPage() {
             <div className="flex items-center justify-between">
               <span className="text-xs sm:text-sm text-muted-foreground">Next billing date</span>
               <span className="text-sm font-medium text-card-foreground">
-                {user?.subscriptionEndDate
-                  ? new Date(user.subscriptionEndDate).toLocaleDateString()
+                {user?.currentPeriodEnd
+                  ? new Date(user.currentPeriodEnd).toLocaleDateString()
                   : 'N/A'}
               </span>
             </div>

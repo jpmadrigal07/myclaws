@@ -71,7 +71,7 @@ export default function DashboardPage() {
       )}
 
       {/* Instance Status Card */}
-      {instance && instance.status !== 'pending_setup' && (
+      {instance && (
         <InstanceStatusCard instance={instance} />
       )}
 
